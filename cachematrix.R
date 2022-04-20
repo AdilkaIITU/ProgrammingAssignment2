@@ -9,19 +9,18 @@
 ## and we use library mass in order to use function solve
 
 library(MASS)
-makeCacheMatrix <- function(x = matrix()) {
-  inVersE  <-  NULL
+makeCacheMatrix <- function(hello = matrix()) {
+  inVersE  <-  NULL  ##initialize inVersE as NULL;
+  
   set  <-  function(f){
-    x  <<-  f
+    
+    hello  <<-  f
     inVersE <<-  NULL
   }
-  get  <-  function() x
-  setINV  <-  function(invrs) inVersE <<- invrs
-  getINV  <-  function() inVersE
-  list(set = set,
-       get = get,
-       setINV = setINV,
-       getINV = getINV)
+  get  <-  function() hello
+  setINV  <-  function(invrs) inVersE <<- invrs ## -> inVersE in parent environment
+  getINV  <-  function() inVersE  ## <- inVersE where called
+  list(set = set, get = get, setINV = setINV, getINV = getINV)
 }
 
 
@@ -30,16 +29,16 @@ makeCacheMatrix <- function(x = matrix()) {
 ##returned by the function above.
 
 
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
-  inVersE  <-  x$getINV()
+cacheSolve <- function(hello, ...) {
+        ## Return a matrix that is the inverse of 'hello'
+  inVersE  <-  hello$getINV()
   if (!is.null(inVersE)){
     message("cashed matrix")
     return(inVersE)
   }
-  d  <-  x$get()
+  d  <-  hello$get()
   inVersE  <-  solve(d, ...)
-  x$setINV(inVersE)
+  hello$setINV(inVersE)
   inVersE    
 }
 
